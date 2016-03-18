@@ -14,7 +14,7 @@ import java.net.URL;
 public class MovieApiHelper {
 
     //replace the below with your own key
-    private static final String API_KEY = "52a0c6535aa03bf8e70defc4c4bbf634";
+    private static final String API_KEY = "API_KEY";
     private static final String GET_MOVIE_URL = "http://api.themoviedb.org/3/movie/";
     private static final String POPULAR_MOVIE_URL = "http://api.themoviedb.org/3/movie/popular?page=";
     private static final String HIGH_RATED_MOVIE_URL = "http://api.themoviedb.org/3/movie/top_rated?page=";
