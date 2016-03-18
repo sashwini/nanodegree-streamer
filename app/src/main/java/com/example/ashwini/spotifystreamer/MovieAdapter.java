@@ -1,8 +1,6 @@
 package com.example.ashwini.spotifystreamer;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +21,12 @@ public class MovieAdapter extends BaseAdapter {
     Context context;
     ArrayList<Movie> movies;
     int page;
+    View.OnClickListener clickListener;
 
-    public MovieAdapter(Context context, ArrayList<Movie> movieArrayList) {
+    public MovieAdapter(Context context, ArrayList<Movie> movieArrayList, View.OnClickListener clickListener) {
         this.context = context;
         movies = movieArrayList;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -52,8 +52,7 @@ public class MovieAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = inflater.inflate(R.layout.movie_grid_cell, null);
-        }
-        else {
+        } else {
             layout = convertView;
         }
 
@@ -61,38 +60,16 @@ public class MovieAdapter extends BaseAdapter {
         imageView.setTag(movies.get(position).getMovieId());
         String imgUrl = movies.get(position).getPosterUrl();
         Picasso.with(context).load(imgUrl).into(imageView);
+//        Picasso.with(context)
+//                .load(url)
+//                .placeholder(R.drawable.user_placeholder)
+//                .error(R.drawable.user_placeholder_error)
+//                .into(imageView);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int movieId = Integer.parseInt(v.getTag().toString());
-                showMovieDetails(movieId);
-            }
-        });
+        imageView.setOnClickListener(clickListener);
 
         TextView posterTextView = (TextView) layout.findViewById(R.id.txt_poster_title);
         posterTextView.setText(movies.get(position).getOriginalTitle());
         return layout;
-    }
-
-    private void showMovieDetails(int movieId) {
-        Movie movie = null;
-        for (Movie m:movies) {
-            if(m.getMovieId() == movieId){
-                movie = m;
-                break;
-            }
-        }
-
-        if(movie == null){
-            return;
-        }
-
-        Intent intent = new Intent(context, MovieDetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("movie", movie);
-        intent.putExtra("bundle", bundle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
     }
 }

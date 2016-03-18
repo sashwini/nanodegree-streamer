@@ -1,15 +1,10 @@
 package com.example.ashwini.spotifystreamer.common;
 
-import android.os.AsyncTask;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 
@@ -19,11 +14,14 @@ import java.net.URL;
 public class MovieApiHelper {
 
     //replace the below with your own key
-    private static final String API_KEY = "YOUR_API_KEY";
-    private static final String POPULAR_MOVIE_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&page=";
-    private static final String HIGH_RATED_MOVIE_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&page=";
+    private static final String API_KEY = "52a0c6535aa03bf8e70defc4c4bbf634";
+    private static final String GET_MOVIE_URL = "http://api.themoviedb.org/3/movie/";
+    private static final String POPULAR_MOVIE_URL = "http://api.themoviedb.org/3/movie/popular?page=";
+    private static final String HIGH_RATED_MOVIE_URL = "http://api.themoviedb.org/3/movie/top_rated?page=";
+    private static final String MOVIE_VIDEOS_URL = "http://api.themoviedb.org/3/movie/$/videos";
+    private static final String MOVIE_REVIEWS_URL = "http://api.themoviedb.org/3/movie/$/reviews";
 
-    public String getPopularMovies(int page) {
+    public static String getPopularMovies(int page) {
         String response = "";
         try {
             String requestUrl = POPULAR_MOVIE_URL + String.valueOf(page);
@@ -35,18 +33,14 @@ public class MovieApiHelper {
             InputStream in = urlConnection.getInputStream();
             response = readResponse(in);
             urlConnection.disconnect();
-        }
-        catch (MalformedURLException me) {
-            me.printStackTrace();
-        }
-        catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
 
         return response;
     }
 
-    public String getRatedMovies(int page) {
+    public static String getRatedMovies(int page) {
         String response = "";
         try {
             String requestUrl = HIGH_RATED_MOVIE_URL + String.valueOf(page);
@@ -58,18 +52,72 @@ public class MovieApiHelper {
             InputStream in = urlConnection.getInputStream();
             response = readResponse(in);
             urlConnection.disconnect();
-        }
-        catch (MalformedURLException me) {
-            me.printStackTrace();
-        }
-        catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
 
         return response;
     }
 
-    private String readResponse(InputStream inputStream) {
+    public static String getMovieTrailers(int movieId) {
+        String response = "";
+        try {
+            String requestUrl = MOVIE_VIDEOS_URL.replace("$", String.valueOf(movieId));
+            URL url = new URL(getFormedUrl(requestUrl));
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setDoInput(true);
+            InputStream in = urlConnection.getInputStream();
+            response = readResponse(in);
+            urlConnection.disconnect();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    public static String getMovieReviews(int movieId) {
+        String response = "";
+        try {
+            String requestUrl = MOVIE_REVIEWS_URL.replace("$", String.valueOf(movieId));
+            URL url = new URL(getFormedUrl(requestUrl));
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setDoInput(true);
+            InputStream in = urlConnection.getInputStream();
+            response = readResponse(in);
+            urlConnection.disconnect();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    //TODO: get particular movie details
+    public static String getMovieDetails(int movieId) {
+        String response = "";
+        try {
+            String requestUrl = GET_MOVIE_URL + String.valueOf(movieId);
+            URL url = new URL(getFormedUrl(requestUrl));
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setDoInput(true);
+            InputStream in = urlConnection.getInputStream();
+            response = readResponse(in);
+            urlConnection.disconnect();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    private static String readResponse(InputStream inputStream) {
 
         StringBuilder responseBuffer = new StringBuilder();
         try {
@@ -79,7 +127,6 @@ public class MovieApiHelper {
             while ((line = streamReader.readLine()) != null){
                 responseBuffer.append(line);
             }
-            System.out.println(responseBuffer);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,7 +134,10 @@ public class MovieApiHelper {
         return responseBuffer.toString();
     }
 
-    private String getFormedUrl(String baseUrl) {
-        return baseUrl + "&api_key=" + API_KEY;
+    private static String getFormedUrl(String baseUrl) {
+
+        return baseUrl.contains("?") ?
+                baseUrl + "&api_key=" + API_KEY :
+                baseUrl + "?api_key=" + API_KEY;
     }
 }

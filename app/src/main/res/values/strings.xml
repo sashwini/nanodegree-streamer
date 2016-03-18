@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">Spotify Streamer</string>
-    <string name="action_sort_popular">Sort by Popularity</string>
-    <string name="action_sort_rated">Sort by Rating</string>
-    <string name="release_date">Release Date:</string>
+    <string name="action_sort_popular">Most Popular</string>
+    <string name="action_sort_rated">Most Rated</string>
+    <string name="action_sort_favorite">My Favorites</string>
+    <string name="action_share_trailer">Share Trailer</string>
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
+    <string name="mark_favorite">Mark as Favorite</string>
+    <string name="no_favorite">No movies marked as Favorite</string>
+    <string name="favorite_message">This movie is added as Favorite</string>
+    <string name="no_connection_title">No Internet!!!</string>
+    <string name="no_connection_message">Make sure you are connected to internet and visit again.</string>
+    <string name="no_trailer_message">No videos to share!!</string>
+    <string name="share_trailer">Share Trailer Video</string>
 </resources>

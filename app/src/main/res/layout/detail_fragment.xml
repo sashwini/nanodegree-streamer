@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.ashwini.spotifystreamer.MainActivity">
+    android:orientation="vertical"
+    tools:context="com.example.ashwini.spotifystreamer.MovieDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -24,11 +23,9 @@
     </android.support.design.widget.AppBarLayout>
 
     <fragment
-        android:id="@+id/gridFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/detailFragmentLayout"
+        class="com.example.ashwini.spotifystreamer.DetailFragment"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        class="com.example.ashwini.spotifystreamer.GridFragment" >
-    </fragment>
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </android.support.design.widget.CoordinatorLayout>
