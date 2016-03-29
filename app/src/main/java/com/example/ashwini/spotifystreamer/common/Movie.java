@@ -14,6 +14,7 @@ public class Movie implements Parcelable{
     private String plotSynopsis;
     private double userRating;
     private String releaseDate;
+    private boolean favorited;
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
@@ -25,6 +26,7 @@ public class Movie implements Parcelable{
             movie.setPlotSynopsis(source.readString());
             movie.setUserRating(source.readDouble());
             movie.setReleaseDate(source.readString());
+            movie.setFavorited(source.readByte() != 0);
             return movie;
         }
 
@@ -86,6 +88,14 @@ public class Movie implements Parcelable{
         return "http://image.tmdb.org/t/p/w185/" + posterPath;
     }
 
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
+
     @Override
     public int describeContents() {
         return movieId;
@@ -99,5 +109,6 @@ public class Movie implements Parcelable{
         dest.writeString(plotSynopsis);
         dest.writeDouble(userRating);
         dest.writeString(releaseDate);
+        dest.writeByte((byte) (favorited ? 1 : 0));
     }
 }

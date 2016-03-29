@@ -7,8 +7,10 @@
     <string name="trailers">Trailers:</string>
     <string name="reviews">Reviews:</string>
     <string name="mark_favorite">Mark as Favorite</string>
+    <string name="unmark_favorite">Unmark as Favorite</string>
     <string name="no_favorite">No movies marked as Favorite</string>
     <string name="favorite_message">This movie is added as Favorite</string>
+    <string name="unfavorite_message">This movie is removed from Favorites</string>
     <string name="no_connection_title">No Internet!!!</string>
     <string name="no_connection_message">Make sure you are connected to internet and visit again.</string>
     <string name="no_trailer_message">No videos to share!!</string>

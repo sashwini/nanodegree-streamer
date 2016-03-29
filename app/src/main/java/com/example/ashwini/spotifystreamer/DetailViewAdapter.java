@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -117,10 +118,19 @@ public class DetailViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         detailViewHolder.getRatingBar().setMax(10);
         Picasso.with(context).load(movie.getPosterUrl()).into(detailViewHolder.getMoviePosterView());
         detailViewHolder.getFavButton().setTag(movie.getMovieId());
+        if(movie.isFavorited()) {
+            detailViewHolder.getFavButton().setText(context.getString(R.string.unmark_favorite));
+        } else {
+            detailViewHolder.getFavButton().setText(context.getString(R.string.mark_favorite));
+        }
         detailViewHolder.getFavButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                   markFavorite((int)v.getTag());
+                if(((Button)v).getText().equals(context.getString(R.string.unmark_favorite))) {
+                    updateFavoriteStatus((int) v.getTag(), true);
+                } else {
+                    updateFavoriteStatus((int) v.getTag(), false);
+                }
             }
         });
     }
@@ -170,10 +180,17 @@ public class DetailViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         context.startActivity(intent);
     }
 
-    private void markFavorite(int movieId) {
-        ContentValues values = new ContentValues();
-        values.put(FavoriteProvider.COL_MOVIE_ID, movieId);
-        context.getContentResolver().insert(FavoriteProvider.CONTENT_URI, values);
-        Toast.makeText(context, R.string.favorite_message, Toast.LENGTH_LONG).show();
+    private void updateFavoriteStatus(int movieId, boolean isFavorite) {
+        if(isFavorite){
+            String where = FavoriteProvider.COL_MOVIE_ID + "=" + movieId;
+            String[] selection = {FavoriteProvider.COL_MOVIE_ID};
+            context.getContentResolver().delete(FavoriteProvider.CONTENT_URI, where, null);
+            Toast.makeText(context, R.string.unfavorite_message, Toast.LENGTH_LONG).show();
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(FavoriteProvider.COL_MOVIE_ID, movieId);
+            context.getContentResolver().insert(FavoriteProvider.CONTENT_URI, values);
+            Toast.makeText(context, R.string.favorite_message, Toast.LENGTH_LONG).show();
+        }
     }
 }

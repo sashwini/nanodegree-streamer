@@ -131,7 +131,7 @@ public class FavoriteProvider extends ContentProvider {
             case BASE_MATHER_CODE:
                 //currently we will support only retrieval of all favorite movies
                 db = mOpenHelper.getWritableDatabase();
-                cursor = db.query(FAV_MOVIES, selectedColumns, null,null, null, null, null);
+                cursor = db.query(FAV_MOVIES, selectedColumns, selection, selectionArgs, null, null, null);
                 break;
         }
         return cursor;

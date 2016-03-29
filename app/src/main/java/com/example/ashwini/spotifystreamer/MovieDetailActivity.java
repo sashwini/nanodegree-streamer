@@ -1,6 +1,7 @@
 package com.example.ashwini.spotifystreamer;
 
 import android.app.FragmentManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,10 +21,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         Bundle bundle = getIntent().getBundleExtra("bundle");
         Movie movie = bundle.getParcelable("movie");
 
+        String[] cols = {FavoriteProvider.COL_MOVIE_ID};
+        String selection = FavoriteProvider.COL_MOVIE_ID + "=" + movie.getMovieId();
+        Cursor cursor = getContentResolver().query(FavoriteProvider.CONTENT_URI, cols, selection, null, null);
+        if(cursor != null && cursor.getCount() > 0){
+            movie.setFavorited(true);
+        } else {
+            movie.setFavorited(false);
+        }
         FragmentManager fragmentManager = getFragmentManager();
         DetailFragment detailFragment = (DetailFragment)fragmentManager.findFragmentById(
                 R.id.detailFragmentLayout);
