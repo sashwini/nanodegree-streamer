@@ -127,9 +127,9 @@ public class DetailViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             @Override
             public void onClick(View v) {
                 if(((Button)v).getText().equals(context.getString(R.string.unmark_favorite))) {
-                    updateFavoriteStatus((int) v.getTag(), true);
+                    updateFavoriteStatus((Button)v, (int) v.getTag(), true);
                 } else {
-                    updateFavoriteStatus((int) v.getTag(), false);
+                    updateFavoriteStatus((Button)v, (int) v.getTag(), false);
                 }
             }
         });
@@ -180,17 +180,19 @@ public class DetailViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         context.startActivity(intent);
     }
 
-    private void updateFavoriteStatus(int movieId, boolean isFavorite) {
+    private void updateFavoriteStatus(Button favButton, int movieId, boolean isFavorite) {
         if(isFavorite){
             String where = FavoriteProvider.COL_MOVIE_ID + "=" + movieId;
             String[] selection = {FavoriteProvider.COL_MOVIE_ID};
             context.getContentResolver().delete(FavoriteProvider.CONTENT_URI, where, null);
             Toast.makeText(context, R.string.unfavorite_message, Toast.LENGTH_LONG).show();
+            favButton.setText(context.getString(R.string.mark_favorite));
         } else {
             ContentValues values = new ContentValues();
             values.put(FavoriteProvider.COL_MOVIE_ID, movieId);
             context.getContentResolver().insert(FavoriteProvider.CONTENT_URI, values);
             Toast.makeText(context, R.string.favorite_message, Toast.LENGTH_LONG).show();
+            favButton.setText(context.getString(R.string.unmark_favorite));
         }
     }
 }
